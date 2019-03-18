@@ -181,3 +181,37 @@ data BoolExpr = And BoolExpr BoolExpr
               | BoolVal Bool
               deriving Show 
 } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
