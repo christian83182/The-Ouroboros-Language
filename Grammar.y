@@ -100,8 +100,12 @@ NumExpr :
       NumExpr '+' NumExpr                               { Plus $1 $3 } 
     | NumExpr '-' NumExpr                               { Minus $1 $3 } 
     | NumExpr '*' NumExpr                               { Multi $1 $3 }
+    | '(' NumExpr '+' NumExpr ')'                       { Plus $2 $4 } 
+    | '(' NumExpr '-' NumExpr ')'                       { Minus $2 $4 } 
+    | '(' NumExpr '*' NumExpr ')'                       { Multi $2 $4 } 
     | intVar                                            { NumVal $1 } 
     | StreamExpr '@' NumExpr                            { StreamIndex $1 $3 }
+    | '(' StreamExpr '@' NumExpr ')'                    { StreamIndex $2 $4 }
     | '#' StreamExpr                                    { StreamLength $2 }
     | '#' StreamBlockWrapper                            { StreamBlockLength $2 }
     
