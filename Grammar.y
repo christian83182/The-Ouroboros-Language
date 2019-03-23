@@ -83,6 +83,7 @@ StreamBlock :
     
 StreamWrapper :
       '[' Stream ']'                                    { BasicStreamWrapper $2 }
+    | '[' ']'                                           { BasicStreamWrapper (EmptyStream) }
     | StreamBlockWrapper '@' NumExpr                    { StreamBlockIndex $1 $3 }
     
 Stream :
@@ -158,6 +159,7 @@ data StreamWrapper = BasicStreamWrapper Stream
 
 data Stream = BasicStream NumExpr Stream
             | SingletonStream NumExpr
+            | EmptyStream
             deriving Show
             
 data BlockWrapper = BasicBlockWrapper Block
