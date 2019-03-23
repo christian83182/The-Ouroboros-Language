@@ -3,26 +3,29 @@ import qualified Data.Map as Map
 import Tokens
 import Grammar
 
+-- Type synonym for an association list used to store variables and their values.
 type VarStore = [ (String , [[Int]]) ]
 
+-- Creates a parse/syntax tree from the given string according to the imported Tokens and Grammar modules. 
 parseLang :: String -> StatementList
 parseLang s = parseTokens (alexScanTokens s)
 
-evalLang :: String -> VarStore -> VarStore
-evalLang s store = evalStatList (parseLang s) store
+-- Tokenizes, Parses and Evaluates a string. Returns the VarStore containing the content of all variables. 
+evalLang :: String -> VarStore
+evalLang s = evalStatList (parseLang s) []
 
 -- Function to evaluate a statement list
 -- Finished
 evalStatList :: StatementList -> VarStore -> VarStore
 evalStatList (SingleStatement stat) store             = evalStat stat store
 evalStatList (MultiStatement stat statList) store     = evalStatList statList updatedStore
-                                                            where updatedStore = evalStat stat store
+    where updatedStore = evalStat stat store
                                                             
 -- Function to evaluate a statement
 -- Missing implementations for everything except varDecStat. 
--- Do we want to allow a statement which does nothing? Eg: a BoolStat
+-- Do we want to allow a statement which does nothing? Eg: a BoolStat?
 evalStat :: Statement -> VarStore  -> VarStore
-evalStat (LoopStat loop) store              = store
+evalStat (LoopStat loop) store              = evalLoop loop store
 evalStat (ImportStat importStat) store      = store
 evalStat (VarDecStat varDec) store          = evalVarDec varDec store
 evalStat (PrintStat printStat) store        = store
@@ -30,6 +33,16 @@ evalStat (NumStat num) store                = store
 evalStat (BoolStat bool) store              = store
 evalStat (StreamStat expr) store            = store
 evalStat (BlockStat blockWrapper) store     = store
+
+-- Function to evaluate a loop statement. The boolean condition is checked, and if it is true then 
+-- the function is called recursively with a new version of VarStore which is the result of evaluating
+-- the statement list within the loop. 
+-- Finished
+evalLoop:: Loop -> VarStore -> VarStore
+evalLoop (BoolLoop bool statList) store  = if shouldLoop == True then newStore else store
+    where shouldLoop = evalBoolExpr bool store
+          newStore = evalLoop (BoolLoop bool statList) (evalStatList statList store)
+          
 
 -- Function to evaluate a variable declaration. Returns an updated version of VarStore. 
 -- The AscList is converted to map before the variable is added to ensure it overweites any previous version. 
