@@ -15,9 +15,11 @@ evalNumExpr (NumVal value)      = value
 -- Function to evaluate a BoolExpr to a Bool.
 -- Finished
 evalBoolExpr :: BoolExpr -> Bool
-evalBoolExpr (And bool1 bool2)      = (evalBoolExpr bool1) && (evalBoolExpr bool2)
-evalBoolExpr (Or bool1 bool2)       = (evalBoolExpr bool1) || (evalBoolExpr bool2)
-evalBoolExpr (Not bool )            = not (evalBoolExpr bool) 
-evalBoolExpr (BoolEq bool1 bool2)   = (evalBoolExpr bool1) == (evalBoolExpr bool2)
-evalBoolExpr (NumEq num1 num2)      = (evalNumExpr num1) == (evalNumExpr num2)
-evalBoolExpr (BoolVal value)        = value
+evalBoolExpr (And bool1 bool2)        = (evalBoolExpr bool1) && (evalBoolExpr bool2)
+evalBoolExpr (Or bool1 bool2)         = (evalBoolExpr bool1) || (evalBoolExpr bool2)
+evalBoolExpr (Not bool)               = not (evalBoolExpr bool) 
+evalBoolExpr (LessThan num1 num2)     = (evalNumExpr num1) < (evalNumExpr num2)
+evalBoolExpr (GreaterThan num1 num2)  = (evalNumExpr num1) > (evalNumExpr num2)
+evalBoolExpr (BoolEq bool1 bool2)     = (evalBoolExpr bool1) == (evalBoolExpr bool2)
+evalBoolExpr (NumEq num1 num2)        = (evalNumExpr num1) == (evalNumExpr num2)
+evalBoolExpr (BoolVal value)          = value

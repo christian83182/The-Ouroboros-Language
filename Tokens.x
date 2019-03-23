@@ -42,6 +42,8 @@ tokens :-
   "}"               { \s -> TokenRBrace}
   ";"               { \s -> TokenSemiColon}
   ","               { \s -> TokenComa}
+  "<"               { \s -> TokenLessThan}
+  ">"               { \s -> TokenGreaterThan}
   "-"? $digit+      { \s -> TokenInt (read s) } 
   $upperAlpha [$upperAlpha]*       { \s -> TokenVarName s }
   $alpha [$alpha $digit \_ \.]*    { \s -> TokenFileName s}
@@ -77,6 +79,8 @@ data Token =
   TokenLBrace            |
   TokenRBrace            |
   TokenSemiColon         |
-  TokenComa
+  TokenComa              |
+  TokenLessThan          |
+  TokenGreaterThan
   deriving (Eq,Show) 
 }

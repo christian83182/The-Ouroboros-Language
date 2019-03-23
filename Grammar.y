@@ -36,6 +36,8 @@ import Tokens
     '}'        { TokenRBrace }
     ';'        { TokenSemiColon }
     ','        { TokenComa }
+    '<'        { TokenLessThan }
+    '>'        { TokenGreaterThan }
     
 
 
@@ -105,9 +107,11 @@ NumExpr :
 BoolExpr :
       BoolExpr 'AND' BoolExpr                           { And $1 $3 }
     | BoolExpr 'OR' BoolExpr                            { Or $1 $3 }
+    | 'NOT' BoolExpr                                    { Not $2 }
+    | NumExpr '<' NumExpr                               { LessThan $1 $3 }
+    | NumExpr '>' NumExpr                               { GreaterThan $1 $3 }
     | BoolExpr '==' BoolExpr                            { BoolEq $1 $3 }
     | NumExpr '==' NumExpr                              { NumEq $1 $3 }
-    | 'NOT' BoolExpr                                    { Not $2 }
     | boolVar                                           { BoolVal $1 }
     
     
@@ -175,9 +179,11 @@ data NumExpr = Plus NumExpr NumExpr
 
 data BoolExpr = And BoolExpr BoolExpr
               | Or BoolExpr BoolExpr
-              | BoolEq BoolExpr BoolExpr
-              | NumEq NumExpr NumExpr
               | Not BoolExpr
+              | LessThan NumExpr NumExpr
+              | GreaterThan NumExpr NumExpr
+              | NumEq NumExpr NumExpr
+              | BoolEq BoolExpr BoolExpr
               | BoolVal Bool
               deriving Show 
 } 
