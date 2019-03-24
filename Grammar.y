@@ -84,6 +84,7 @@ StreamWrapper :
       '[' Stream ']'                                    { BasicStreamWrapper $2 }
     | '[' ']'                                           { BasicStreamWrapper (EmptyStream) }
     | StreamBlockWrapper '@' NumExpr                    { StreamBlockIndex $1 $3 }
+    | '(' StreamBlockWrapper '@' NumExpr ')'            { StreamBlockIndex $2 $4 }
     
 Stream :
       NumExpr ',' Stream                                { BasicStream $1 $3 }

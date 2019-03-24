@@ -1,0 +1,2 @@
+import as DATA;             ||Store the data passed through STDIN as a variable called DATA.
+print {[0] & DATA @0};      ||Print a new block, conisting of a stream [0] appended to the first stream in DATA. 

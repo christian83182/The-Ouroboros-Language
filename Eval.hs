@@ -48,13 +48,22 @@ evalStat :: Statement -> VarStore  -> VarStore
 evalStat (LoopStat loop) store              = evalLoop loop store
 evalStat (ImportStat importStat) store      = evalImport importStat store
 evalStat (VarDecStat varDec) store          = evalVarDec varDec store
-evalStat (PrintStat printStat) store        = store
+evalStat (PrintStat printStat) store        = evalPrintStat printStat store
 evalStat (NumStat num) store                = store
 evalStat (BoolStat bool) store              = store
 evalStat (StreamStat expr) store            = store
 evalStat (BlockStat blockWrapper) store     = store
 
--- Function to evaluate a import statement. It essentially assigned the value of th'global' variable to some name.
+-- Function to evaluate a print statement. It creates an entry in VarStore with a key called 'output' which will
+-- then be checked later and outputed at the end of the program. 
+-- Finished
+evalPrintStat :: Print -> VarStore -> VarStore
+evalPrintStat (PrintBlock block) store = Map.toAscList newMap
+    where newMap   = Map.insert "output" (evalBlockWrapper block store) oldMap
+          oldMap   = Map.fromAscList store
+
+
+-- Function to evaluate a import statement. It essentially assigned the value of the 'global' variable to some name.
 -- Finished
 evalImport :: Import -> VarStore -> VarStore
 evalImport (FileImport varName) store = Map.toAscList newMap

@@ -2,6 +2,7 @@ import Tokens
 import Grammar
 import Eval
 
+import Data.List
 import System.Environment
 import Control.Exception
 import System.IO
@@ -12,14 +13,23 @@ main = catch executeProg noParse
 executeProg = do
             (fileName : _ ) <- getArgs
             sourceText      <- readFile fileName
-            content         <- getContents
-            putStrLn ("Source Text: " ++ sourceText ++ "\n")
+            stdInContents   <- getContents
             let tokens = alexScanTokens sourceText
-            putStrLn ("Tokens: " ++ (show tokens) ++ "\n")
             let parsedLang = parseTokens (tokens)
-            putStrLn ("Parsed as: " ++ (show parsedLang) ++ "\n")
-            let result = evalProgram (parsedLang) (content)
-            putStrLn ("Evaluates to: " ++ (show result) ++ "\n")
+            let result = evalProgram (parsedLang) (stdInContents)
+            --putStrLn (show result)
+            let output = lookup "output" result 
+            putStr (makeOutputString output)
+            
+makeOutputString :: Maybe [[Int]] -> String
+makeOutputString Nothing = ""
+makeOutputString (Just block) = parseOutputBlock transposedBlock
+    where transposedBlock = Data.List.transpose stringBlock
+          stringBlock = map (map show) block :: [[String]]
+        
+parseOutputBlock :: [[String]] -> String
+parseOutputBlock (x:xs) = (intercalate " " x) ++ ['\n'] ++ (parseOutputBlock xs)
+parseOutputBlock [] = "" 
 
 noParse :: ErrorCall -> IO ()
 noParse e = do let err =  show e
