@@ -1,0 +1,3 @@
+import as DATA;
+
+var OUT = {DATA @0, DATA @0};

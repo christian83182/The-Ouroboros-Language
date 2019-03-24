@@ -11,7 +11,6 @@ import Tokens
     intVar     { TokenInt $$ } 
     boolVar    { TokenBoolean $$ }
     varName    { TokenVarName $$ }
-    fileName   { TokenFileName $$ }
     'print'    { TokenPrint }
     'var'      { TokenVarDec }
     '='        { TokenVarEq }
@@ -94,7 +93,7 @@ Loop :
       'loop' '(' BoolExpr ')' '(' StatementList ')'     { BoolLoop $3 $6 }
       
 Import :
-      'import' fileName 'as' varName                    { FileImport $2 $4 }
+      'import' 'as' varName                             { FileImport $3 }
 
 NumExpr : 
       NumExpr '+' NumExpr                               { Plus $1 $3 } 
@@ -147,7 +146,7 @@ data Print = PrintBlock BlockWrapper
 data VarDec = VarDec String BlockWrapper
             deriving Show
                
-data Import = FileImport String String
+data Import = FileImport String
             deriving Show
 
 data Loop = BoolLoop BoolExpr StatementList

@@ -46,13 +46,11 @@ tokens :-
   ">"               { \s -> TokenGreaterThan}
   "-"? $digit+      { \s -> TokenInt (read s) } 
   $upperAlpha [$upperAlpha]*       { \s -> TokenVarName s }
-  $alpha [$alpha $digit \_ \.]*    { \s -> TokenFileName s}
 { 
 
 data Token =  
   TokenInt Int           |
   TokenVarName String    |
-  TokenFileName String   |
   TokenBoolean Bool      |
   TokenPrint             |
   TokenVarDec            |

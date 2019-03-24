@@ -1,19 +1,39 @@
+module Eval where
+import Grammar
+import Data.List
+import Debug.Trace
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Tokens
-import Grammar
 
 -- Type synonym for an association list used to store variables and their values.
 type VarStore = [ (String , [[Int]]) ]
 
--- Creates a parse/syntax tree from the given string according to the imported Tokens and Grammar modules. 
-parseLang :: String -> StatementList
-parseLang s = parseTokens (alexScanTokens s)
+-- Function to evaluate the progeam as a whole. 
+-- Takes a list of statements and a string containing whatever was passed into STDIN and returns the
+-- final VarStore
+evalProgram :: StatementList -> String -> VarStore
+evalProgram statList input = evalStatList statList [("global",parseStreamBlock input)]
 
--- Tokenizes, Parses and Evaluates a string. Returns the VarStore containing the content of all variables. 
-evalLang :: String -> VarStore
-evalLang s = evalStatList (parseLang s) []
+-- Parses some String representing a Stream Block into a [[Int]] of the same value. 
+parseStreamBlock :: String -> [[Int]]
+parseStreamBlock s = init (intStreams !! 0) : (tail intStreams)
+    where intStreams = map (map read) streams :: [[Int]]
+          streams = Data.List.transpose (splitOnWhitespace (split s '\n'))
 
+-- Recursively splits the strings within a list on ' ' such that a list of lists is formed. 
+splitOnWhitespace :: [String] -> [[String]]
+splitOnWhitespace (x:xs) = (split x ' ') : (splitOnWhitespace xs)
+splitOnWhitespace [] = []
+
+-- Splits some sting on some character into a list. 
+split :: String -> Char -> [String]
+split [] char = [""]
+split (x:xs) char
+    | x == char = "" : rest
+    | otherwise = (x : head rest) : tail rest
+    where
+        rest = split xs char
+    
 -- Function to evaluate a statement list
 -- Finished
 evalStatList :: StatementList -> VarStore -> VarStore
@@ -26,13 +46,23 @@ evalStatList (MultiStatement stat statList) store     = evalStatList statList up
 -- Do we want to allow a statement which does nothing? Eg: a BoolStat?
 evalStat :: Statement -> VarStore  -> VarStore
 evalStat (LoopStat loop) store              = evalLoop loop store
-evalStat (ImportStat importStat) store      = store
+evalStat (ImportStat importStat) store      = evalImport importStat store
 evalStat (VarDecStat varDec) store          = evalVarDec varDec store
 evalStat (PrintStat printStat) store        = store
 evalStat (NumStat num) store                = store
 evalStat (BoolStat bool) store              = store
 evalStat (StreamStat expr) store            = store
 evalStat (BlockStat blockWrapper) store     = store
+
+-- Function to evaluate a import statement. It essentially assigned the value of th'global' variable to some name.
+-- Finished
+evalImport :: Import -> VarStore -> VarStore
+evalImport (FileImport varName) store = Map.toAscList newMap
+    where newMap      = Map.insert varName globalValue oldMap
+          oldMap      = Map.fromAscList store
+          globalValue = case lookup "global" store of
+                            Nothing -> error ("No data to import")
+                            Just value -> value
 
 -- Function to evaluate a loop statement. The boolean condition is checked, and if it is true then 
 -- the function is called recursively with a new version of VarStore which is the result of evaluating
