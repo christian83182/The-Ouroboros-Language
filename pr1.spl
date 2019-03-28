@@ -1,0 +1,13 @@
+import as DATA;             ||Store the data passed through STDIN as a variable called DATA. 
+
+var I = {[0]};
+var OUT = {[0]};
+
+loop ((I @0 @0) < #(DATA @ 0)-1)          ||Loop while the index counter is less than the length of the streams.
+(
+    var VAL = {[DATA @0 @(I @0 @0)]};                               ||Extract the value of the stream at the indexed position. 
+    var OUT = {OUT @0 & VAL @0};                                    ||Append the current value of ACCUMULATOR to OUT.
+    var I = {[(I @0 @0) +1]};                                       ||Increase the value of the index. 
+)
+
+print OUT;
