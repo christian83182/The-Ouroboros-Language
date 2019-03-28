@@ -1,0 +1,4 @@
+compile:
+    alex Tokens.x
+	happy Grammar.y
+	ghc --make interpreter.hs myinterpreter -o
