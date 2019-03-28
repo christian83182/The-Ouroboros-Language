@@ -1,0 +1,23 @@
+import as DATA;     ||Store the data passed through STDIN as a variable called DATA
+
+var OUT = {[]};                         ||Create a variable from which to construct the final stream.
+var I = {[2]};                          ||Create a variable to keep track of the position in the stream. 
+var NEW = {[0]};                           ||Create a variable to keep track of the accumulated value. 
+var FIRSTVAL = {[DATA @0 @0]};
+var SECONDVAL = {[DATA @0 @1]};
+var OUT = {OUT @0 & FIRSTVAL @0};
+var OUT = {OUT @0 & SECONDVALVAL @0};
+
+loop ((I @0 @0) < #(DATA @ 0))          ||Loop while the index counter is less than the length of the streams.
+(
+    var VAL = {[DATA @0 @(I @0 @0)]};                                       ||Extract the value of the stream at the indexed position. 
+    var NEW = {[ (FIRSTVAL @0 @0) + (SECONDVAL @0 @0) + (VAL @0 @0) ]};
+	var OUT = {OUT @0 & NEW @0};                                            ||Append the current value of ACCUMULATOR to OUT.
+    var INDONE = {[(I @0 @0) - 1]};
+	var INDTWO = {[(I @0 @0) - 2]};
+	var FIRSTVAL = {[OUT @0 @(INDONE @0 @0)]};
+    var SECONDVAL = {[OUT @0 @(INDTWO @0 @0)]};
+    var I = {[(I @0 @0) + 1]};                                              ||Increase the value of the index.	
+)
+
+print OUT;              ||Print the variable with the constructed steam.

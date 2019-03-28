@@ -1,0 +1,12 @@
+import as DATA;             ||Store the data passed through STDIN as a variable called DATA. 
+
+var I = {[0]};              ||Create a variable to keep track of the position in the stream. 
+var OUT = {[0]};            ||Create a variable from which to construct the final stream.
+
+loop ((I @0 @0) < #(DATA @ 0) - 1)          ||Loop while the index counter is less than the length of the streams.
+(
+    var OUT = {OUT @0 & [DATA @0 @(I @0 @0)]};                      ||Append the value of DATA at the index to the output stream.                
+    var I = {[(I @0 @0) +1]};                                       ||Increase the value of the index. 
+)
+
+print OUT;              ||Print the variable with the constructed steam.

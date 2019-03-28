@@ -1,0 +1,24 @@
+import as DATA;                     ||store the imported data in a variable called DATA.
+
+var FIB = {[1,1]};                  ||The FIB variable will be used to store and grow a stream containing the Fibonacci Sequence
+var I = {[0]};                      ||The I variable is used as a counter for the external loop.
+var OUT = {[]};                     ||The OUT variable will be used to construct the output stream. 
+
+loop (I @0 @0 < #(DATA @0))         ||Loop the amount of times there are items in DATA's first stream.
+(    
+    var FIB = {[(FIB @0 @0) + (FIB @0 @1)] & FIB @0 };      ||Grow the FIB sequence by one by adding the first two items in the list, and appending this to the start.
+    var J = {[0]};                                          ||Createa a variable used as a conter for the interal loop. 
+    var NEXT = {[0]};                                       ||The NEXT variable is used to construct the next number in the output stream.
+    
+    loop (J @0 @0 < (I @0 @0)+1)    ||Loop the amount of times as items we have explored in DATA's first stream. 
+    (
+        var PRODUCT = {[ (DATA @0 @(J @0 @0)) * (FIB @0 @((J @0 @0)+2 )) ]};    ||Calculate the product of an item in DATA and the element in FIB at the same index. 
+        var NEXT = {[(NEXT @0 @0) + (PRODUCT @0 @0)]};                          ||Add the calculated PRODUCT to NEXT.
+        var J = {[(J @0 @0) + 1]};                                              ||Increase the internal loop counter. 
+    )
+    
+    var OUT = {OUT @0 & [NEXT @0 @0]};          ||Append the generated NEXT number in the sequence to the output steam.
+    var I = {[(I @0 @0) + 1]};                  ||Increase the external loop counter. 
+)
+
+print OUT;      ||State the name of the variable which should be outputted. 
