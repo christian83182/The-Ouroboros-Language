@@ -1,0 +1,20 @@
+import as DATA;
+
+var I = {[2]};
+var OUT = {[]};
+
+||Need to add checks for singleton and empty lists
+
+loop ((#(DATA @0) > 2)
+(
+   var OUT = {[(DATA @0 @0)] & [(DATA @0 @1)]};
+   loop ((I @0 @0) < #(DATA @0)) 
+   (
+      var IND = {[(I @0 @0) - 2]};
+	  var PREV = {[OUT @0 @(IND @0 @0)]};
+	  var CURRENT = {[DATA @0 @(I @0 @0)]};
+	  var RESULT = {[(PREV @0 @0) + (CURRENT @0 @0)]};
+	  var OUT = {OUT @0 & RESULT @0};
+	  var I = {[(I @0 @0) +1]};
+   )	   
+)

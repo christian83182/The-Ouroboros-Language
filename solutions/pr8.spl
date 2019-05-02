@@ -1,0 +1,15 @@
+import as DATA;
+
+var I = {[0]};
+var OUT = {[(DATA @0) + 0]};
+
+loop ((I @0 @0) < #(DATA @0))
+(
+    var AVAL = {[DATA @0 @(I @0 @0)]};
+    var I = {[(I @0 @0) +1]};	
+    var BVAL = {[DATA @0 @(I @0 @0)]}; 
+    var RESULT = {[(BVAL @0 @0) + (AVAL @0 @0)]};   
+    var OUT = {OUT @0 & RESULT @0};
+)
+
+print {OUT @0};

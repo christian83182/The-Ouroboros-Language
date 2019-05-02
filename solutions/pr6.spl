@@ -1,0 +1,12 @@
+import as DATA;
+
+var I = {[0]};
+var OUT = {[0]};
+
+loop ((I @0 @0) < #(DATA @ 0) - 1)          
+(
+    var OUT = {OUT @0 & [DATA @0 @(I @0 @0)]};
+    var I = {[(I @0 @0) +1]};
+)
+
+print {DATA @0, OUT @0};
