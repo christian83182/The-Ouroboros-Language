@@ -1,0 +1,20 @@
+import as DATA;
+
+var I = {[0]};
+var OUT = {[]};
+
+loop ((I @0 @0) < #(DATA @0))
+(
+    var BUILD = {[0]};
+	var MULT = {[I @0 @0]};
+	var RESULT = {[0]}; 
+	
+    loop((BUILD @0 @0) < (I @0 @0))                                  || So basic idea is that this loop is for building each element that will be added to the output list
+	(
+	     var VAL = {[(MULT @0 @0) * (DATA @0 @(BUILD @0 @0))]};
+	     var RESULT = {[]};
+         var MULT = {[(MULT @0 @0) - 1]};
+         var BUILD = {[(BUILD @0 @0) + 1]};		 
+	)
+	var OUT = {OUT @0 & RESULT @0};
+)
