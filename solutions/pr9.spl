@@ -1,20 +1,24 @@
-import as DATA;
+import as DATA;                     ||store the imported data in a variable called DATA.
 
-var I = {[0]};
-var OUT = {[]};
+var NAT = {[1]};                    ||The NAT variable will be used to store and grow a stream containing the natural numbers
+var I = {[0]};                      ||The I variable is used as a counter for the external loop.
+var OUT = {[]};                     ||The OUT variable will be used to construct the output stream. 
 
-loop ((I @0 @0) < #(DATA @0))
-(
-    var BUILD = {[0]};
-	var MULT = {[I @0 @0]};
-	var RESULT = {[0]}; 
-	
-    loop((BUILD @0 @0) < (I @0 @0))                                  || So basic idea is that this loop is for building each element that will be added to the output list
-	(
-	     var VAL = {[(MULT @0 @0) * (DATA @0 @(BUILD @0 @0))]};
-	     var RESULT = {[]};
-         var MULT = {[(MULT @0 @0) - 1]};
-         var BUILD = {[(BUILD @0 @0) + 1]};		 
-	)
-	var OUT = {OUT @0 & RESULT @0};
+loop (I @0 @0 < #(DATA @0))         ||Loop the amount of times there are items in DATA's first stream.
+(    
+    var NAT = {[(NAT @0 @0) + 1] & NAT @0};                 ||Grow the NAT sequence by adding one to the first element in the stream, and appending this to the start.
+    var J = {[0]};                                          ||Createa a variable used as a conter for the interal loop. 
+    var NEXT = {[0]};                                       ||The NEXT variable is used to construct the next number in the output stream.
+    
+    loop (J @0 @0 < (I @0 @0)+1)    ||Loop the amount of times as items we have explored in DATA's first stream. 
+    (
+        var PRODUCT = {[ (DATA @0 @(J @0 @0)) * (NAT @0 @(J @0 @0)+1) ]};           ||Find the product of the item in NAT and DATA at the index J.
+        var NEXT = {[(NEXT @0 @0) + (PRODUCT @0 @0)]};                              ||Add the calculated PRODUCT to NEXT.
+        var J = {[(J @0 @0) + 1]};                                                  ||Increase the internal loop counter. 
+    )
+    
+    var OUT = {OUT @0 & [NEXT @0 @0]};          ||Append the generated NEXT number in the sequence to the output steam.
+    var I = {[(I @0 @0) + 1]};                  ||Increase the external loop counter. 
 )
+
+print OUT;      ||Print the OUT variable. 

@@ -1,20 +1,17 @@
-import as DATA;
+import as ADATA;                ||Store the data passed through STDIN as a variable called DATA. 
 
-var I = {[2]};
-var OUT = {[]};
+var I = {[0]};                  ||Create a variable to keep track of the position in the stream. 
+var BDATA = {[0,0]};            ||Create a variable to keep track of the number which should be added at every point in the stream.
+var OUT = {[]};                 ||Create a variable from which to construct the final stream.
 
-||Need to add checks for singleton and empty lists
-
-loop ((#(DATA @0) > 2)
+loop ((I @0 @0) < #(ADATA @0))      ||Loop while the index counter is less than the length of the streams.
 (
-   var OUT = {[(DATA @0 @0)] & [(DATA @0 @1)]};
-   loop ((I @0 @0) < #(DATA @0)) 
-   (
-      var IND = {[(I @0 @0) - 2]};
-	  var PREV = {[OUT @0 @(IND @0 @0)]};
-	  var CURRENT = {[DATA @0 @(I @0 @0)]};
-	  var RESULT = {[(PREV @0 @0) + (CURRENT @0 @0)]};
-	  var OUT = {OUT @0 & RESULT @0};
-	  var I = {[(I @0 @0) +1]};
-   )	   
+    var AVAL = {[ADATA @0 @(I @0 @0)]};                     ||Create a variable AVAl equal to the first stream in ADATA at the index.
+    var BVAL = {[BDATA @0 @(I @0 @0)]};                     ||Create a variable BVAL equal to the first stream in BDATA at the index.
+    var RESULT = {[(AVAL @0 @0) + (BVAL @0 @0)]};           ||Calculate the result by adding the values in AVAL and BVAL.
+    var BDATA = {BDATA @0 & RESULT @0};                     ||Append the result to the BDATA stream.
+    var OUT = {OUT @0 & RESULT @0};                         ||Append the result to the output stream.
+    var I = {[(I @0 @0) +1]};                               ||Increment the index counter. 
 )
+
+print OUT;              ||Print the OUT variable. 

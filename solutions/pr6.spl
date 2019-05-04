@@ -1,12 +1,12 @@
-import as DATA;
+import as DATA;             ||Store the data passed through STDIN as a variable called DATA. 
 
-var I = {[0]};
-var OUT = {[0]};
+var I = {[0]};              ||Create a variable to keep track of the position in the stream. 
+var OUT = {[0]};            ||Create a variable from which to construct the final stream.
 
-loop ((I @0 @0) < #(DATA @ 0) - 1)          
+loop ((I @0 @0) < #(DATA @ 0) - 1)          ||Loop while the index counter is less than the length of the streams.
 (
-    var OUT = {OUT @0 & [DATA @0 @(I @0 @0)]};
-    var I = {[(I @0 @0) +1]};
+    var OUT = {OUT @0 & [DATA @0 @(I @0 @0)]};                      ||Append the value of DATA at the index to the output stream.                
+    var I = {[(I @0 @0) +1]};                                       ||Increase the value of the index. 
 )
 
-print {DATA @0, OUT @0};
+print {DATA @0, OUT @0};              ||Print the input stream, and the generated & prefixed stream
